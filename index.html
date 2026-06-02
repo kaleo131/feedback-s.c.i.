@@ -2,311 +2,401 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca | RH - Cury</title>
-    
-    <meta name="robots" content="noindex">
-
-    <link rel="icon" type="image/png" href="icone.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manual de Feedback - Ciclo de Performance</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Saira', 'sans-serif'],
-                    },
-                    colors: {
-                        cury: {
-                            dark: '#17379b',
-                            blue: '#1749e3',
-                            light: '#53ade6',
-                            green: '#31c09d',
-                            orange: '#e16944',
-                            purple: '#9120bb',
-                            bg: '#f4f4f4'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        /* Configuração do Fundo Fixo com Transparência 0.60 e Imagem Local PNG */
-        body { 
-            background-color: #f4f4f4; 
-            color: #1e293b; 
-            background-image: linear-gradient(rgba(244, 244, 244, 0.88), rgba(244, 244, 244, 0.60)), url('fundo.png');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        
-        .theme-content { display: none; }
-        .theme-content.open { display: block; animation: fadeIn 0.3s ease-in-out; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            background-color: #fafbf6; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        @media print {
-            @page { margin: 1cm; }
-            body { background-image: none !important; background-color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .print-hidden { display: none !important; }
-            .theme-content { display: block !important; border-top: 1px solid #e2e8f0; }
-            .theme-card { break-inside: avoid; border: 1px solid #cbd5e1 !important; margin-bottom: 24px !important; box-shadow: none !important; }
-            .print-border { border: 1px solid #cbd5e1 !important; }
+        /* Classe para ocultar a barra de rolagem mas permitir arrastar */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @media (max-width: 640px) {
+            .hide-on-mobile { display: none; }
+        }
+
+        .typewriter-cursor::after {
+            content: '|';
+            animation: blink 1s step-start infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Transições suaves para os elementos visuais */
+        .visual-element {
+            transition: opacity 0.8s ease-in-out, transform 0.8s ease-out, filter 0.8s ease-in-out;
         }
     </style>
-
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-
 </head>
-<body class="font-sans antialiased selection:bg-cury-light/30 selection:text-cury-dark flex flex-col min-h-screen relative">
+<body class="antialiased text-gray-800 flex flex-col">
 
-    <!-- Overlay (Fundo escuro) e Menu Lateral -->
-    <div id="side-menu-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
-    
-    <div id="side-menu" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-[70] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col print:hidden">
-        <div class="bg-cury-dark p-6 flex items-center justify-between">
-            <div class="flex items-center gap-3 text-white">
-                <i data-lucide="menu"></i>
-                <span class="font-bold text-lg">Menu de Acesso</span>
-            </div>
-            <button onclick="toggleMenu()" class="text-white hover:text-cury-light transition-colors">
-                <i data-lucide="x"></i>
-            </button>
-        </div>
-        
-        <nav class="p-4 flex-grow flex flex-col gap-2">
-            <a href="https://manual-ciclo-performance-rh-cury.vercel.app/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 text-cury-dark font-medium transition-colors">
-                <i data-lucide="layout-grid" class="w-5 h-5 text-cury-light"></i>
-                Hub Central
-            </a>
+    <div id="start-overlay" class="fixed inset-0 z-[100] bg-white/70 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="bg-white p-8 md:p-12 rounded-3xl shadow-2xl flex flex-col items-center max-w-lg w-11/12 text-center border border-slate-200 transform transition-transform">
             
-            <a href="https://manual-metas-rh-cury.vercel.app/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 text-cury-dark font-medium transition-colors">
-                <i data-lucide="target" class="w-5 h-5 text-cury-green"></i>
-                Ciclo de Metas
-            </a>
-
-            <a href="https://manual-pdi-cury.vercel.app/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 text-cury-dark font-medium transition-colors">
-                <i data-lucide="trending-up" class="w-5 h-5 text-cury-blue"></i>
-                Guia do PDI
-            </a>
-            
-            <div class="w-full h-px bg-slate-200 my-2"></div>
-
-            <!-- Aba Atual (Biblioteca) -->
-            <div class="flex items-center gap-3 p-3 rounded-lg bg-cury-purple/10 text-cury-purple font-bold border border-cury-purple/20">
-                <i data-lucide="play-circle" class="w-5 h-5"></i>
-                Biblioteca e Vídeos
-                <span class="ml-auto w-2 h-2 rounded-full bg-cury-purple"></span>
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6 animate-bounce">
+                <i data-lucide="play" class="w-10 h-10 ml-1"></i>
             </div>
-        </nav>
-        
-        <div class="p-4 border-t border-slate-200">
-            <p class="text-xs text-slate-500 font-medium text-center">Cury Construtora - Remuneração</p>
+            
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3">Guia de Feedback</h1>
+            <p class="text-slate-500 mb-8">Bem-vindo(a) ao guia interativo de Feedback. Escolha como deseja iniciar a apresentação.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <button onclick="startPresentation(true)" class="px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-base transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 w-full sm:flex-1">
+                    <i data-lucide="volume-2" class="w-5 h-5"></i>
+                    Com Áudio
+                </button>
+                <button onclick="startPresentation(false)" class="px-6 py-4 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-full font-bold text-base transition-transform hover:scale-105 active:scale-95 shadow-sm flex items-center justify-center gap-2 w-full sm:flex-1">
+                    <i data-lucide="volume-x" class="w-5 h-5"></i>
+                    Sem Áudio
+                </button>
+            </div>
+            
         </div>
     </div>
 
-    <!-- Cabeçalho -->
-    <header class="bg-cury-dark text-white border-b-4 border-cury-green sticky top-0 z-50 shadow-md print:static print:shadow-none">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-                
-                <!-- Botão do Menu Hambúrguer -->
-                <button onclick="toggleMenu()" class="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors print:hidden flex items-center justify-center">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
-                <div class="h-8 w-px bg-white/20 print:hidden hidden md:block"></div>
+    <a href="javascript:history.back()" class="fixed top-4 left-4 z-50 bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm tooltip" title="Voltar para a Biblioteca de Mídia">
+        <i data-lucide="library" class="w-4 h-4 text-emerald-600"></i>
+        <span class="hide-on-mobile">Biblioteca</span>
+    </a>
 
-                <img src="logo.png" alt="Logo Cury" class="h-10 w-auto print:invert-0" onerror="this.src='https://placehold.co/100x40/17379b/ffffff?text=CURY'">
-                <div class="h-8 w-px bg-white/20 hidden md:block print:bg-slate-400"></div>
-                <div>
-                    <h1 class="text-xl font-extrabold tracking-tight uppercase">Portal de Performance</h1>
-                    <p class="text-xs text-cury-light font-medium print:text-slate-500 hover:text-white transition-colors hover:underline">
-                        <a href="mailto:remuneracao.rh@cury.net">RH - Remuneração</a>
-                    </p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <div class="text-sm font-bold bg-cury-blue py-2 px-5 rounded-full text-white flex items-center gap-2 border border-cury-light/30 shadow-inner print:border-slate-400 print:text-cury-dark print:bg-slate-100">
-                    <i data-lucide="calendar" class="w-4 h-4"></i> Ciclo 2026
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="flex-grow max-w-5xl mx-auto px-6 py-12 print:py-6 w-full">
+    <div id="presentation-area" class="relative w-full h-[calc(100vh-80px)] overflow-hidden flex justify-center items-center bg-[#fafbf6]">
         
-        <!-- Cabeçalho da Biblioteca -->
-        <section class="mb-12 text-center max-w-3xl mx-auto print:mb-8">
-            <div class="inline-flex items-center justify-center p-3 bg-cury-purple/10 text-cury-purple rounded-full mb-4">
-                <i data-lucide="play-circle" class="w-8 h-8"></i>
+        <!-- Fundo Geral -->
+        <img id="bg-general" src="geral.png" alt="Visão Geral Feedback" class="absolute inset-0 w-full h-full object-contain opacity-100 visual-element z-0">
+
+        <!-- Overlay de Desfoque (Blur) -->
+        <div id="blur-overlay" class="absolute inset-0 bg-slate-900/50 backdrop-blur-md opacity-0 visual-element z-10 pointer-events-none"></div>
+
+        <!-- Container para as Imagens dos Temas -->
+        <img id="theme-image" src="" alt="Tema Atual" class="absolute z-20 max-h-[85%] max-w-[90%] md:max-w-[70%] object-contain rounded-2xl shadow-2xl opacity-0 scale-95 visual-element pointer-events-none">
+
+        <!-- Container para o Texto de Reflexão (Máquina de Escrever) -->
+        <div id="text-container" class="absolute z-30 px-6 max-w-4xl text-center flex flex-col items-center justify-center opacity-0 scale-95 visual-element pointer-events-none">
+            <p id="typewriter-text" class="text-white font-medium text-2xl md:text-4xl lg:text-5xl leading-tight md:leading-relaxed drop-shadow-lg font-serif italic"></p>
+        </div>
+
+    </div>
+
+    <div class="h-[80px] bg-white border-t border-slate-200 px-4 md:px-8 w-full flex items-center justify-between shrink-0 shadow-[0_-4px_15px_rgba(0,0,0,0.02)] z-40 relative">
+        
+        <div class="w-1/4 hidden md:block"></div>
+
+        <div class="flex-1 flex justify-center items-center gap-1 md:gap-3">
+            <button onclick="scrollCarousel(-1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors shrink-0 tooltip" title="Rolar etapas">
+                <i data-lucide="chevron-left" class="w-4 h-4 md:w-5 md:h-5"></i>
+            </button>
+
+            <div class="flex items-center justify-start gap-2 overflow-x-auto no-scrollbar py-2 scroll-smooth w-[260px] md:w-[380px]" id="pagination-container">
+                <!-- Botões gerados via JS -->
             </div>
-            <h2 class="text-3xl md:text-4xl font-extrabold text-cury-dark mb-4">Biblioteca de Metodologias</h2>
-            <p class="text-lg text-slate-600 font-medium leading-relaxed bg-white/60 p-4 rounded-xl shadow-sm border border-slate-200 print-border">
-                Bem-vindo ao espaço de aprendizado contínuo. Aqui você encontra pílulas de conhecimento, vídeos e conceitos rápidos para apoiar a sua liderança e o desenvolvimento da sua equipe na Cury.
-            </p>
-        </section>
 
-        <section class="mb-12">
-            <!-- TEMA 1: Guia Prático de Feedback -->
-            <div class="theme-card border border-slate-200 rounded-xl mb-4 bg-white shadow-sm overflow-hidden transition-all hover:border-cury-blue/30">
-                
-                <!-- Visão Recolhida (Botão) -->
-                <button onclick="toggleTheme(1)" class="w-full flex items-center justify-between p-4 sm:p-5 text-left hover:bg-slate-50 print-hidden transition-colors">
-                    <div class="flex items-center gap-4">
-                        
-                        <!-- Títulos -->
-                        <div>
-                            <div class="flex items-center gap-3 mb-1">
-                                <div class="bg-cury-purple/10 p-2 rounded-lg">
-                                    <i data-lucide="monitor-play" class="w-5 h-5 text-cury-purple"></i>
-                                </div>
-                                <h3 class="text-lg sm:text-xl font-bold text-cury-dark leading-tight">Guia Prático de Feedback</h3>
-                            </div>
-                            <!-- A margem esquerda (ml-[44px]) alinha o subtítulo perfeitamente com o texto principal -->
-                            <p class="text-sm text-slate-500 font-medium ml-[44px]">Transformando Diálogo em Evolução</p>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-slate-100 p-2 rounded-full shrink-0 ml-4">
-                        <i data-lucide="chevron-down" id="icon-1" class="text-cury-dark transition-transform duration-300 w-5 h-5"></i>
-                    </div>
-                </button>
-                
-                <!-- Conteúdo Expandido -->
-                <div id="content-1" class="theme-content bg-slate-50/50 border-t border-slate-100 print-bg-white">
-                    <div class="p-6 md:p-8">
-                        
-                        <div class="flex flex-col md:flex-row gap-8 items-start">
-                            <!-- Lado Esquerdo: Texto e Botão -->
-                            <div class="flex-1 flex flex-col">
-                                <div class="flex items-center gap-3 mb-4 border-b-2 border-cury-blue/20 pb-2 w-fit">
-                                    <i data-lucide="book-open" class="w-6 h-6 text-cury-blue"></i>
-                                    <h4 class="text-xl font-bold text-cury-dark">Sobre este conteúdo</h4>
-                                </div>
-                                
-                                <p class="text-slate-600 font-medium leading-relaxed mb-4">
-                                    O feedback é a ferramenta mais poderosa para alinhar expectativas, corrigir rotas e impulsionar o crescimento do seu time. Para que ele seja construtivo e não gere ruídos de comunicação, a Cury adota a <strong class="text-cury-blue">Metodologia SCI (Situação, Comportamento, Impacto)</strong>.
-                                </p>
-                                <p class="text-slate-600 font-medium leading-relaxed mb-8">
-                                    Acesse a apresentação completa para entender como transformar suas conversas de rotina em momentos estruturados de evolução profissional, sempre com clareza e empatia.
-                                </p>
-                                
-                                <!-- Botão de Ação -->
-                                <a href="https://LINK-DA-APRESENTACAO-DO-FEEDBACK-AQUI" target="_blank" class="inline-flex items-center justify-center gap-3 bg-cury-blue hover:bg-[#133ab8] text-white font-bold py-4 px-8 rounded-xl transition-all shadow-md hover:shadow-lg w-full sm:w-auto self-start">
-                                    <i data-lucide="external-link" class="w-5 h-5"></i>
-                                    Acessar Apresentação
-                                </a>
-                            </div>
+            <button onclick="scrollCarousel(1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors shrink-0 tooltip" title="Rolar etapas">
+                <i data-lucide="chevron-right" class="w-4 h-4 md:w-5 md:h-5"></i>
+            </button>
+        </div>
 
-                            <!-- Lado Direito: Capa do Material -->
-                            <div class="w-full md:w-1/3 shrink-0">
-                                <img src="capa-feedback.png" alt="Capa Guia Prático de Feedback" class="w-full h-auto rounded-xl border border-slate-200 shadow-sm" onerror="this.src='https://placehold.co/400x300/17379b/ffffff?text=Capa+Feedback'">
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Você pode adicionar os próximos temas copiando e colando o bloco "theme-card" acima e mudando os IDs (ex: toggleTheme(2), id="content-2", id="icon-2") -->
-
-        </section>
-
-    </main>
-
-    <footer class="bg-cury-dark text-white p-8 w-full border-t-4 border-cury-blue mt-auto">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="space-y-3 w-full md:w-auto text-center md:text-left">
-                <h4 class="font-extrabold text-xl">Dúvidas sobre os processos?</h4>
-                <p class="text-cury-light text-sm">Fale com a gente: <strong><a href="mailto:remuneracao.rh@cury.net" class="hover:underline text-white">remuneracao.rh@cury.net</a></strong></p>
-                <p class="text-cury-light text-sm">Manual e Book no <strong>Autodoc</strong>.</p>
-            </div>
-            
-            <div class="text-center md:text-right w-full md:w-auto border-t border-white/20 md:border-t-0 pt-4 md:pt-0">
-                <div class="flex justify-center md:justify-end gap-4 mb-3">
-                    <img src="hashtag1.png" alt="#CulturaConcreta" class="h-6 w-auto opacity-90 print:invert-0">
-                    <img src="hashtag2.png" alt="#SomosCury" class="h-6 w-auto opacity-90 print:invert-0">
-                </div>
-                <p class="font-bold text-base">RH - Remuneração & Cargos e Salários</p>
-                <p class="mt-1 text-cury-light text-xs font-medium">Uso restrito e interno Cury Construtora</p>
+        <div class="flex items-center justify-end w-full md:w-1/4">
+            <div class="flex flex-col items-end">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mr-1 mb-0.5">Narração</span>
+                <!-- Alterado src para audio.mp3 -->
+                <audio id="presentation-audio" src="audio.mp3" controls class="h-8 md:h-10 w-48 md:w-64 outline-none rounded-lg bg-slate-50"></audio>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- HTML DO BALÃO FLUTUANTE -->
+    <div id="global-tooltip" class="fixed z-50 px-3 py-1.5 bg-slate-800 text-white text-xs md:text-sm whitespace-nowrap rounded-lg shadow-xl pointer-events-none transition-all duration-200 opacity-0 invisible">
+        <span id="global-tooltip-text"></span>
+        <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+    </div>
 
     <script>
         lucide.createIcons();
 
-        // Inicializar com todas as abas fechadas
-        const openThemes = { 1: false };
+        // Dados de todas as etapas (tempos, tipos de visualização e arquivos correspondentes)
+        const steps = [
+            { id: 0, title: "1. Introdução", time: 0, type: "geral", file: "geral.png" },
+            { id: 1, title: "2. Como Receber e Agir?", time: 66, type: "tema", file: "receber.png" }, // 01:06
+            { id: 2, title: "3. Retorno ao Mapa", time: 160, type: "geral", file: "geral.png" },       // 02:40
+            { id: 3, title: "4. Metodologia SCI", time: 170, type: "tema", file: "sci.png" },         // 02:50
+            { id: 4, title: "5. Retorno ao Mapa", time: 205, type: "geral", file: "geral.png" },       // 03:25
+            { id: 5, title: "6. Boas Práticas", time: 217, type: "tema", file: "praticas.png" },      // 03:37
+            { id: 6, title: "7. Retorno ao Mapa", time: 300, type: "geral", file: "geral.png" },       // 05:00
+            { id: 7, title: "8. Reflexão Final", time: 325, type: "texto", file: null },             // 05:25
+            { id: 8, title: "9. Conclusão", time: 333, type: "geral", file: "geral.png" }             // 05:33
+        ];
 
-        // Função para Abrir/Fechar as abas independentemente com regra de "fechar as outras"
-        function toggleTheme(themeNumber) {
-            const isOpening = !openThemes[themeNumber];
+        let currentStepIndex = 0;
+        let typeWriterInterval = null;
+        let isTyping = false;
+
+        const quoteText = "“Não podemos mudar algo que não percebemos, mas depois que percebemos, não podemos deixar de mudar”.\n\n— Sheryl Sandberg";
+
+        function startPresentation(comAudio) {
+            const overlay = document.getElementById('start-overlay');
+            const audio = document.getElementById('presentation-audio');
+
+            overlay.classList.add('opacity-0');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                if (comAudio && audio) {
+                    audio.playbackRate = 1.25; 
+                    audio.play().catch(e => console.log("O navegador bloqueou o autoplay:", e));
+                }
+            }, 500); 
+        }
+
+        function initPagination() {
+            const container = document.getElementById('pagination-container');
+            container.innerHTML = ''; 
             
-            // Fecha todas as abas (se tiver mais de 1 no futuro, mude o limite do loop)
-            for (let i = 1; i <= 1; i++) {
-                openThemes[i] = false;
-                updateThemeView(i);
-            }
+            container.insertAdjacentHTML('beforeend', '<div class="shrink-0 w-[130px] md:w-[190px]"></div>');
 
-            // Se estava fechada, abre apenas ela
-            if (isOpening) {
-                openThemes[themeNumber] = true;
-                updateThemeView(themeNumber);
+            steps.forEach((step, index) => {
+                container.insertAdjacentHTML('beforeend', `
+                    <button onclick="goToStep(${index})" 
+                            id="page-btn-${index}" 
+                            onmouseenter="handleMouseEnter(${index}, this)"
+                            onmouseleave="hideGlobalTooltip()"
+                            class="relative flex items-center justify-center rounded-full transition-all duration-300 shrink-0">
+                        <span id="page-label-${index}" class="transition-all duration-300 whitespace-nowrap font-medium"></span>
+                    </button>
+                `);
+            });
+
+            container.insertAdjacentHTML('beforeend', '<div class="shrink-0 w-[130px] md:w-[190px]"></div>');
+        }
+
+        function updateUI() {
+            steps.forEach((step, index) => {
+                const btn = document.getElementById(`page-btn-${index}`);
+                const label = document.getElementById(`page-label-${index}`);
+                const distance = Math.abs(index - currentStepIndex);
+                
+                if (distance === 0) {
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-emerald-600 text-white shadow-md ring-4 ring-emerald-100 shrink-0 h-10 px-4 md:px-5 cursor-default";
+                    label.innerText = step.title; 
+                    label.className = "whitespace-nowrap font-bold text-sm md:text-base";
+                } else if (distance === 1) {
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-emerald-600 shrink-0 h-10 w-10 cursor-pointer";
+                    label.innerText = index + 1; 
+                    label.className = "font-medium text-sm md:text-base";
+                } else if (distance === 2) {
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100/80 text-slate-400 hover:bg-slate-200 hover:text-emerald-600 shrink-0 h-8 w-8 cursor-pointer";
+                    label.innerText = index + 1; 
+                    label.className = "font-medium text-xs";
+                } else {
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100/50 text-slate-300 hover:bg-slate-200 hover:text-emerald-600 shrink-0 h-6 w-6 cursor-pointer opacity-70 hover:opacity-100";
+                    label.innerText = index + 1; 
+                    label.className = "font-medium text-[10px]";
+                }
+            });
+
+            hideGlobalTooltip();
+
+            const activeBtn = document.getElementById(`page-btn-${currentStepIndex}`);
+            if (activeBtn) {
+                setTimeout(() => {
+                    activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                }, 100);
             }
         }
 
-        // Função para atualizar a visualização (Classe CSS e Ícone)
-        function updateThemeView(themeNumber) {
-            const content = document.getElementById(`content-${themeNumber}`);
-            const icon = document.getElementById(`icon-${themeNumber}`);
-            
-            if (!content || !icon) return;
+        function applyVisualState(step) {
+            const bgGeneral = document.getElementById('bg-general');
+            const blurOverlay = document.getElementById('blur-overlay');
+            const themeImage = document.getElementById('theme-image');
+            const textContainer = document.getElementById('text-container');
+            const typewriterText = document.getElementById('typewriter-text');
 
-            if (openThemes[themeNumber]) {
-                content.classList.add('open');
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                content.classList.remove('open');
-                icon.style.transform = 'rotate(0deg)';
+            // Cancela animação de texto se estiver ocorrendo
+            clearInterval(typeWriterInterval);
+            isTyping = false;
+
+            if (step.type === 'geral') {
+                // Remove desfoque, oculta tema e textos
+                blurOverlay.classList.replace('opacity-100', 'opacity-0');
+                themeImage.classList.replace('opacity-100', 'opacity-0');
+                themeImage.classList.replace('scale-100', 'scale-95');
+                textContainer.classList.replace('opacity-100', 'opacity-0');
+                textContainer.classList.replace('scale-100', 'scale-95');
+                typewriterText.innerHTML = '';
+            } 
+            else if (step.type === 'tema') {
+                // Aplica desfoque no fundo e mostra a imagem do tema
+                blurOverlay.classList.replace('opacity-0', 'opacity-100');
+                
+                // Transição suave da troca de imagem se já estiver visível
+                themeImage.classList.replace('opacity-100', 'opacity-0');
+                themeImage.classList.replace('scale-100', 'scale-95');
+                
+                setTimeout(() => {
+                    themeImage.src = step.file;
+                    themeImage.classList.replace('opacity-0', 'opacity-100');
+                    themeImage.classList.replace('scale-95', 'scale-100');
+                }, 300);
+
+                textContainer.classList.replace('opacity-100', 'opacity-0');
+                textContainer.classList.replace('scale-100', 'scale-95');
+                typewriterText.innerHTML = '';
+            }
+            else if (step.type === 'texto') {
+                // Aplica desfoque e inicia texto de reflexão
+                blurOverlay.classList.replace('opacity-0', 'opacity-100');
+                themeImage.classList.replace('opacity-100', 'opacity-0');
+                themeImage.classList.replace('scale-100', 'scale-95');
+                
+                textContainer.classList.replace('opacity-0', 'opacity-100');
+                textContainer.classList.replace('scale-95', 'scale-100');
+                
+                startTypewriterEffect();
             }
         }
 
-        // Função para abrir e fechar o Menu Lateral
-        function toggleMenu() {
-            const menu = document.getElementById('side-menu');
-            const overlay = document.getElementById('side-menu-overlay');
+        function startTypewriterEffect() {
+            const element = document.getElementById('typewriter-text');
+            element.innerHTML = '';
+            element.classList.add('typewriter-cursor');
+            let i = 0;
+            isTyping = true;
             
-            if (menu.classList.contains('-translate-x-full')) {
-                // Abrir Menu
-                menu.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
-            } else {
-                // Fechar Menu
-                menu.classList.add('-translate-x-full');
-                overlay.classList.add('opacity-0');
-                setTimeout(() => overlay.classList.add('hidden'), 300);
+            // Corrige quebras de linha para HTML
+            const textToType = quoteText.replace(/\n/g, '<br/>');
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = textToType;
+            const plainNodes = Array.from(tempDiv.childNodes);
+            let charIndex = 0;
+            let currentStr = "";
+
+            typeWriterInterval = setInterval(() => {
+                if (charIndex < textToType.length) {
+                    let char = textToType.charAt(charIndex);
+                    if (char === '<') {
+                        // Avança até fechar a tag (ex: <br/>)
+                        let tag = "";
+                        while (textToType.charAt(charIndex) !== '>' && charIndex < textToType.length) {
+                            tag += textToType.charAt(charIndex);
+                            charIndex++;
+                        }
+                        tag += '>';
+                        currentStr += tag;
+                    } else {
+                        currentStr += char;
+                    }
+                    element.innerHTML = currentStr;
+                    charIndex++;
+                } else {
+                    clearInterval(typeWriterInterval);
+                    isTyping = false;
+                    element.classList.remove('typewriter-cursor');
+                }
+            }, 45); // Velocidade de digitação
+        }
+
+        function goToStep(index, syncAudio = true) {
+            if (index < 0 || index >= steps.length) return;
+            if (currentStepIndex === index && !syncAudio) return;
+
+            currentStepIndex = index;
+            const step = steps[index];
+            
+            applyVisualState(step);
+            updateUI();
+
+            const audio = document.getElementById('presentation-audio');
+            if (syncAudio && audio) {
+                audio.currentTime = step.time;
             }
         }
+
+        const audioPlayer = document.getElementById('presentation-audio');
+        if (audioPlayer) {
+            audioPlayer.addEventListener('timeupdate', () => {
+                const currentTime = audioPlayer.currentTime;
+                let targetStep = 0;
+
+                for (let i = steps.length - 1; i >= 0; i--) {
+                    if (currentTime >= steps[i].time) {
+                        targetStep = i;
+                        break;
+                    }
+                }
+
+                if (currentStepIndex !== targetStep) {
+                    goToStep(targetStep, false); 
+                }
+            });
+
+            audioPlayer.addEventListener('ended', () => {
+                goToStep(0, false);
+            });
+        }
+
+        function handleMouseEnter(index, element) {
+            if (index !== currentStepIndex) {
+                const tooltip = document.getElementById('global-tooltip');
+                document.getElementById('global-tooltip-text').innerText = steps[index].title;
+                const rect = element.getBoundingClientRect();
+                
+                tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+                tooltip.style.top = (rect.top - 8) + 'px'; 
+                tooltip.style.transform = 'translate(-50%, -100%)';
+                tooltip.classList.remove('opacity-0', 'invisible');
+            }
+        }
+
+        function hideGlobalTooltip() {
+            const tooltip = document.getElementById('global-tooltip');
+            if (tooltip) tooltip.classList.add('opacity-0', 'invisible');
+        }
+
+        function scrollCarousel(direction) {
+            const container = document.getElementById('pagination-container');
+            container.scrollBy({ left: direction * 150, behavior: 'smooth' });
+        }
+
+        function nextStep() {
+            if (currentStepIndex < steps.length - 1) goToStep(currentStepIndex + 1);
+            else goToStep(0);
+        }
+
+        function prevStep() {
+            if (currentStepIndex > 0) goToStep(currentStepIndex - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') nextStep();
+            if (e.key === 'ArrowLeft') prevStep();
+        });
+
+        window.onload = () => {
+            initPagination();
+            const audio = document.getElementById('presentation-audio');
+            if (audio) audio.playbackRate = 1.25;
+            
+            // Inicia na etapa 0
+            goToStep(0, false);
+        };
     </script>
 </body>
 </html>
