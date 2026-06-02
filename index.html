@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca | RH - Cury</title>
+    
+    <meta name="robots" content="noindex">
+
+    <link rel="icon" type="image/png" href="icone.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Saira', 'sans-serif'],
+                    },
+                    colors: {
+                        cury: {
+                            dark: '#17379b',
+                            blue: '#1749e3',
+                            light: '#53ade6',
+                            green: '#31c09d',
+                            orange: '#e16944',
+                            purple: '#9120bb',
+                            bg: '#f4f4f4'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Configuração do Fundo Fixo com Transparência 0.60 e Imagem Local PNG */
+        body { 
+            background-color: #f4f4f4; 
+            color: #1e293b; 
+            background-image: linear-gradient(rgba(244, 244, 244, 0.88), rgba(244, 244, 244, 0.60)), url('fundo.png');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .theme-content { display: none; }
+        .theme-content.open { display: block; animation: fadeIn 0.3s ease-in-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media print {
+            @page { margin: 1cm; }
+            body { background-image: none !important; background-color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .print-hidden { display: none !important; }
+            .theme-content { display: block !important; border-top: 1px solid #e2e8f0; }
+            .theme-card { break-inside: avoid; border: 1px solid #cbd5e1 !important; margin-bottom: 24px !important; box-shadow: none !important; }
+            .print-border { border: 1px solid #cbd5e1 !important; }
+        }
+    </style>
+
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+</head>
+<body class="font-sans antialiased selection:bg-cury-light/30 selection:text-cury-dark flex flex-col min-h-screen relative">
+
+    <!-- Overlay (Fundo escuro) e Menu Lateral -->
+    <div id="side-menu-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden opacity-0 transition-opacity duration-300" onclick="toggleMenu()"></div>
+    
+    <div id="side-menu" class="fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-[70] transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col print:hidden">
+        <div class="bg-cury-dark p-6 flex items-center justify-between">
+            <div class="flex items-center gap-3 text-white">
+                <i data-lucide="menu"></i>
+                <span class="font-bold text-lg">Menu de Acesso</span>
+            </div>
+            <button onclick="toggleMenu()" class="text-white hover:text-cury-light transition-colors">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        
+        <nav class="p-4 flex-grow flex flex-col gap-2">
+            <a href="https://manual-ciclo-performance-rh-cury.vercel.app/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 text-cury-dark font-medium transition-colors">
+                <i data-lucide="layout-grid" class="w-5 h-5 text-cury-light"></i>
+                Hub Central
+            </a>
+            
+            <a href="https://manual-metas-rh-cury.vercel.app/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 text-cury-dark font-medium transition-colors">
+                <i data-lucide="target" class="w-5 h-5 text-cury-green"></i>
+                Ciclo de Metas
+            </a>
+
+            <a href="https://manual-pdi-cury.vercel.app/" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 text-cury-dark font-medium transition-colors">
+                <i data-lucide="trending-up" class="w-5 h-5 text-cury-blue"></i>
+                Guia do PDI
+            </a>
+            
+            <div class="w-full h-px bg-slate-200 my-2"></div>
+
+            <!-- Aba Atual (Biblioteca) -->
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-cury-purple/10 text-cury-purple font-bold border border-cury-purple/20">
+                <i data-lucide="play-circle" class="w-5 h-5"></i>
+                Biblioteca e Vídeos
+                <span class="ml-auto w-2 h-2 rounded-full bg-cury-purple"></span>
+            </div>
+        </nav>
+        
+        <div class="p-4 border-t border-slate-200">
+            <p class="text-xs text-slate-500 font-medium text-center">Cury Construtora - Remuneração</p>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
+    <header class="bg-cury-dark text-white border-b-4 border-cury-green sticky top-0 z-50 shadow-md print:static print:shadow-none">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                
+                <!-- Botão do Menu Hambúrguer -->
+                <button onclick="toggleMenu()" class="p-2 -ml-2 hover:bg-white/10 rounded-lg transition-colors print:hidden flex items-center justify-center">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="h-8 w-px bg-white/20 print:hidden hidden md:block"></div>
+
+                <img src="logo.png" alt="Logo Cury" class="h-10 w-auto print:invert-0" onerror="this.src='https://placehold.co/100x40/17379b/ffffff?text=CURY'">
+                <div class="h-8 w-px bg-white/20 hidden md:block print:bg-slate-400"></div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight uppercase">Portal de Performance</h1>
+                    <p class="text-xs text-cury-light font-medium print:text-slate-500 hover:text-white transition-colors hover:underline">
+                        <a href="mailto:remuneracao.rh@cury.net">RH - Remuneração</a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="text-sm font-bold bg-cury-blue py-2 px-5 rounded-full text-white flex items-center gap-2 border border-cury-light/30 shadow-inner print:border-slate-400 print:text-cury-dark print:bg-slate-100">
+                    <i data-lucide="calendar" class="w-4 h-4"></i> Ciclo 2026
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto px-6 py-12 print:py-6 w-full">
+        
+        <!-- Cabeçalho da Biblioteca -->
+        <section class="mb-12 text-center max-w-3xl mx-auto print:mb-8">
+            <div class="inline-flex items-center justify-center p-3 bg-cury-purple/10 text-cury-purple rounded-full mb-4">
+                <i data-lucide="play-circle" class="w-8 h-8"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-cury-dark mb-4">Biblioteca de Metodologias</h2>
+            <p class="text-lg text-slate-600 font-medium leading-relaxed bg-white/60 p-4 rounded-xl shadow-sm border border-slate-200 print-border">
+                Bem-vindo ao espaço de aprendizado contínuo. Aqui você encontra pílulas de conhecimento, vídeos e conceitos rápidos para apoiar a sua liderança e o desenvolvimento da sua equipe na Cury.
+            </p>
+        </section>
+
+        <section class="mb-12">
+            <!-- TEMA 1: Guia Prático de Feedback -->
+            <div class="theme-card border border-slate-200 rounded-xl mb-4 bg-white shadow-sm overflow-hidden transition-all hover:border-cury-blue/30">
+                
+                <!-- Visão Recolhida (Botão) -->
+                <button onclick="toggleTheme(1)" class="w-full flex items-center justify-between p-4 sm:p-5 text-left hover:bg-slate-50 print-hidden transition-colors">
+                    <div class="flex items-center gap-4">
+                        
+                        <!-- Títulos -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <div class="bg-cury-purple/10 p-2 rounded-lg">
+                                    <i data-lucide="monitor-play" class="w-5 h-5 text-cury-purple"></i>
+                                </div>
+                                <h3 class="text-lg sm:text-xl font-bold text-cury-dark leading-tight">Guia Prático de Feedback</h3>
+                            </div>
+                            <!-- A margem esquerda (ml-[44px]) alinha o subtítulo perfeitamente com o texto principal -->
+                            <p class="text-sm text-slate-500 font-medium ml-[44px]">Transformando Diálogo em Evolução</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-100 p-2 rounded-full shrink-0 ml-4">
+                        <i data-lucide="chevron-down" id="icon-1" class="text-cury-dark transition-transform duration-300 w-5 h-5"></i>
+                    </div>
+                </button>
+                
+                <!-- Conteúdo Expandido -->
+                <div id="content-1" class="theme-content bg-slate-50/50 border-t border-slate-100 print-bg-white">
+                    <div class="p-6 md:p-8">
+                        
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <!-- Lado Esquerdo: Texto e Botão -->
+                            <div class="flex-1 flex flex-col">
+                                <div class="flex items-center gap-3 mb-4 border-b-2 border-cury-blue/20 pb-2 w-fit">
+                                    <i data-lucide="book-open" class="w-6 h-6 text-cury-blue"></i>
+                                    <h4 class="text-xl font-bold text-cury-dark">Sobre este conteúdo</h4>
+                                </div>
+                                
+                                <p class="text-slate-600 font-medium leading-relaxed mb-4">
+                                    O feedback é a ferramenta mais poderosa para alinhar expectativas, corrigir rotas e impulsionar o crescimento do seu time. Para que ele seja construtivo e não gere ruídos de comunicação, a Cury adota a <strong class="text-cury-blue">Metodologia SCI (Situação, Comportamento, Impacto)</strong>.
+                                </p>
+                                <p class="text-slate-600 font-medium leading-relaxed mb-8">
+                                    Acesse a apresentação completa para entender como transformar suas conversas de rotina em momentos estruturados de evolução profissional, sempre com clareza e empatia.
+                                </p>
+                                
+                                <!-- Botão de Ação -->
+                                <a href="https://LINK-DA-APRESENTACAO-DO-FEEDBACK-AQUI" target="_blank" class="inline-flex items-center justify-center gap-3 bg-cury-blue hover:bg-[#133ab8] text-white font-bold py-4 px-8 rounded-xl transition-all shadow-md hover:shadow-lg w-full sm:w-auto self-start">
+                                    <i data-lucide="external-link" class="w-5 h-5"></i>
+                                    Acessar Apresentação
+                                </a>
+                            </div>
+
+                            <!-- Lado Direito: Capa do Material -->
+                            <div class="w-full md:w-1/3 shrink-0">
+                                <img src="capa-feedback.png" alt="Capa Guia Prático de Feedback" class="w-full h-auto rounded-xl border border-slate-200 shadow-sm" onerror="this.src='https://placehold.co/400x300/17379b/ffffff?text=Capa+Feedback'">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Você pode adicionar os próximos temas copiando e colando o bloco "theme-card" acima e mudando os IDs (ex: toggleTheme(2), id="content-2", id="icon-2") -->
+
+        </section>
+
+    </main>
+
+    <footer class="bg-cury-dark text-white p-8 w-full border-t-4 border-cury-blue mt-auto">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="space-y-3 w-full md:w-auto text-center md:text-left">
+                <h4 class="font-extrabold text-xl">Dúvidas sobre os processos?</h4>
+                <p class="text-cury-light text-sm">Fale com a gente: <strong><a href="mailto:remuneracao.rh@cury.net" class="hover:underline text-white">remuneracao.rh@cury.net</a></strong></p>
+                <p class="text-cury-light text-sm">Manual e Book no <strong>Autodoc</strong>.</p>
+            </div>
+            
+            <div class="text-center md:text-right w-full md:w-auto border-t border-white/20 md:border-t-0 pt-4 md:pt-0">
+                <div class="flex justify-center md:justify-end gap-4 mb-3">
+                    <img src="hashtag1.png" alt="#CulturaConcreta" class="h-6 w-auto opacity-90 print:invert-0">
+                    <img src="hashtag2.png" alt="#SomosCury" class="h-6 w-auto opacity-90 print:invert-0">
+                </div>
+                <p class="font-bold text-base">RH - Remuneração & Cargos e Salários</p>
+                <p class="mt-1 text-cury-light text-xs font-medium">Uso restrito e interno Cury Construtora</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Inicializar com todas as abas fechadas
+        const openThemes = { 1: false };
+
+        // Função para Abrir/Fechar as abas independentemente com regra de "fechar as outras"
+        function toggleTheme(themeNumber) {
+            const isOpening = !openThemes[themeNumber];
+            
+            // Fecha todas as abas (se tiver mais de 1 no futuro, mude o limite do loop)
+            for (let i = 1; i <= 1; i++) {
+                openThemes[i] = false;
+                updateThemeView(i);
+            }
+
+            // Se estava fechada, abre apenas ela
+            if (isOpening) {
+                openThemes[themeNumber] = true;
+                updateThemeView(themeNumber);
+            }
+        }
+
+        // Função para atualizar a visualização (Classe CSS e Ícone)
+        function updateThemeView(themeNumber) {
+            const content = document.getElementById(`content-${themeNumber}`);
+            const icon = document.getElementById(`icon-${themeNumber}`);
+            
+            if (!content || !icon) return;
+
+            if (openThemes[themeNumber]) {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Função para abrir e fechar o Menu Lateral
+        function toggleMenu() {
+            const menu = document.getElementById('side-menu');
+            const overlay = document.getElementById('side-menu-overlay');
+            
+            if (menu.classList.contains('-translate-x-full')) {
+                // Abrir Menu
+                menu.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+            } else {
+                // Fechar Menu
+                menu.classList.add('-translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+    </script>
+</body>
+</html>
