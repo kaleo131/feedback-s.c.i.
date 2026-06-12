@@ -15,11 +15,10 @@
             width: 100%;
             height: 100%;
             overflow: hidden; 
-            background-color: #fafbf6; /* Cor de fundo solicitada */
+            background-color: #fafbf6;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Classe para ocultar a barra de rolagem da paginação */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -32,11 +31,10 @@
             .hide-on-mobile { display: none; }
         }
 
-        /* Efeito cursor de texto digitando */
         .typing-cursor::after {
             content: '|';
             animation: blink 1s step-start infinite;
-            color: #10b981; /* Ajustado para emerald-500 combinando com o tema */
+            color: #10b981;
         }
         
         @keyframes blink {
@@ -46,11 +44,9 @@
 </head>
 <body class="antialiased text-slate-800 flex flex-col">
 
-    <!-- OVERLAY DE INÍCIO DA APRESENTAÇÃO -->
     <div id="start-overlay" class="fixed inset-0 z-[100] bg-white/80 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-2xl flex flex-col items-center max-w-lg w-11/12 text-center border border-slate-200 transform transition-transform">
             
-            <!-- Ícone de Play Animado -->
             <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6 animate-bounce">
                 <i data-lucide="play" class="w-10 h-10 ml-1"></i>
             </div>
@@ -58,7 +54,6 @@
             <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3">Guia de Feedback</h1>
             <p class="text-slate-500 mb-8">Bem-vindo(a) ao guia interativo de Feedback. Escolha como deseja iniciar a apresentação.</p>
             
-            <!-- Botões de Escolha de Áudio -->
             <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
                 <button onclick="startPresentation(true)" class="px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-base transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 w-full sm:flex-1">
                     <i data-lucide="volume-2" class="w-5 h-5"></i>
@@ -73,22 +68,22 @@
         </div>
     </div>
 
-    <!-- Botão Voltar para Biblioteca -->
-    <a href="javascript:history.back()" class="fixed top-4 left-4 z-50 bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm tooltip" title="Voltar para a Biblioteca de Mídia">
+    <a href="https://biblioteca-de-metodologias-rh-cury.vercel.app/" class="fixed top-4 left-4 z-50 bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
         <i data-lucide="library" class="w-4 h-4 text-emerald-600"></i>
         <span class="hide-on-mobile">Biblioteca</span>
     </a>
 
-    <!-- ÁREA DE APRESENTAÇÃO DE IMAGENS -->
+    <button onclick="toggleFullScreen()" class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
+        <i data-lucide="maximize" id="fullscreen-icon" class="w-4 h-4 text-emerald-600"></i>
+        <span class="hide-on-mobile" id="fullscreen-text">Tela Cheia</span>
+    </button>
+
     <div id="presentation-area" class="relative w-full flex-1 overflow-hidden flex justify-center items-center bg-[#fafbf6]">
         
-        <!-- Fundo Geral Permanente (Sempre 100% de opacidade no fundo) -->
         <img id="bg-general" src="geral.png" alt="Visão Geral Feedback" class="absolute inset-0 w-full h-full object-contain opacity-100 z-0">
 
-        <!-- Overlay de Desfoque (Blur) na paleta de cores (fundo claro com blur) -->
         <div id="blur-overlay" class="absolute inset-0 bg-[#fafbf6]/85 backdrop-blur-md opacity-0 transition-opacity duration-1000 z-10 pointer-events-none"></div>
 
-        <!-- Temas (Imagens Individuais) - Todas com o mesmo comportamento (Opacidade 0 e reduzidas no início) -->
         <img id="img-capa" src="capa.png" alt="Capa Feedback" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
 
         <img id="img-receber" src="receber.png" alt="Como Receber e Agir" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
@@ -97,7 +92,6 @@
         
         <img id="img-praticas" src="praticas.png" alt="Boas Práticas" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
 
-        <!-- Texto Reflexão (Máquina de Escrever) -->
         <div id="container-reflexao" class="absolute z-30 max-w-4xl w-11/12 text-center opacity-0 transition-opacity duration-1000 pointer-events-none flex flex-col items-center justify-center">
             <i data-lucide="quote" class="w-12 h-12 md:w-16 md:h-16 text-emerald-500 mb-6 opacity-80"></i>
             <p id="texto-reflexao" class="text-2xl md:text-4xl lg:text-5xl font-medium text-slate-800 leading-relaxed tracking-wide min-h-[150px] font-serif"></p>
@@ -105,20 +99,16 @@
         </div>
     </div>
 
-    <!-- Painel Inferior de Navegação -->
-    <div class="h-[80px] bg-white border-t border-slate-200 px-4 md:px-8 w-full flex items-center justify-between shrink-0 shadow-[0_-4px_15px_rgba(0,0,0,0.02)] z-50 relative">
+    <div class="min-h-[80px] bg-white border-t border-slate-200 px-2 md:px-8 w-full flex flex-col md:flex-row items-center justify-between shrink-0 shadow-[0_-4px_15px_rgba(0,0,0,0.02)] z-50 relative py-3 md:py-0 gap-3 md:gap-0">
         
         <div class="w-1/4 hidden md:block"></div>
 
-        <!-- Container Central Limitado para Rolagem -->
-        <div class="flex-1 flex justify-center items-center gap-1 md:gap-3">
+        <div class="flex-1 flex w-full md:w-auto justify-center items-center gap-1 md:gap-3">
             <button onclick="scrollCarousel(-1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors shrink-0">
                 <i data-lucide="chevron-left" class="w-4 h-4 md:w-5 md:h-5"></i>
             </button>
 
-            <!-- Área de Rolagem dos Números -->
             <div class="flex items-center justify-start gap-2 overflow-x-auto no-scrollbar py-2 scroll-smooth w-[260px] md:w-[380px]" id="pagination-container">
-                <!-- Injetado via JS -->
             </div>
 
             <button onclick="scrollCarousel(1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors shrink-0">
@@ -126,16 +116,14 @@
             </button>
         </div>
 
-        <!-- Reprodutor de Áudio -->
-        <div class="flex items-center justify-end w-full md:w-1/4">
-            <div class="flex flex-col items-end">
-                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mr-1 mb-0.5">Narração</span>
-                <audio id="presentation-audio" src="audio.mp3" controls class="h-8 md:h-10 w-48 md:w-64 outline-none rounded-lg bg-slate-50"></audio>
+        <div class="flex items-center justify-center md:justify-end w-full md:w-1/4">
+            <div class="flex flex-col items-center md:items-end w-[90%] md:w-auto">
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest md:mr-1 mb-0.5">Narração</span>
+                <audio id="presentation-audio" src="audio.mp3" controls class="h-8 md:h-10 w-full md:w-64 outline-none rounded-lg bg-slate-50"></audio>
             </div>
         </div>
     </div>
 
-    <!-- Balão de Tooltip -->
     <div id="global-tooltip" class="fixed z-[110] px-3 py-1.5 bg-slate-800 text-white text-xs md:text-sm whitespace-nowrap rounded-lg shadow-xl pointer-events-none transition-all duration-200 opacity-0 invisible">
         <span id="global-tooltip-text"></span>
         <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
@@ -144,25 +132,23 @@
     <script>
         lucide.createIcons();
 
-        // Tempos e configurações do fluxo da apresentação
         const steps = [
             { id: 0, title: "1. Capa", time: 0, type: "capa" },
-            { id: 1, title: "2. Visão Geral", time: 35, type: "geral" },                // 00:35
-            { id: 2, title: "3. Como Receber e Agir", time: 66, type: "receber" },       // 01:06
-            { id: 3, title: "4. Visão Geral", time: 160, type: "geral" },                // 02:40
-            { id: 4, title: "5. Metodologia SCI", time: 170, type: "sci" },              // 02:50
-            { id: 5, title: "6. Visão Geral", time: 205, type: "geral" },                // 03:25
-            { id: 6, title: "7. Boas Práticas", time: 217, type: "praticas" },           // 03:37
-            { id: 7, title: "8. Visão Geral", time: 300, type: "geral" },                // 05:00
-            { id: 8, title: "9. Reflexão", time: 325, type: "texto" },                   // 05:25
-            { id: 9, title: "10. Visão Geral Final", time: 333, type: "geral" },         // 05:33
+            { id: 1, title: "2. Visão Geral", time: 35, type: "geral" },
+            { id: 2, title: "3. Como Receber e Agir", time: 66, type: "receber" },
+            { id: 3, title: "4. Visão Geral", time: 160, type: "geral" },
+            { id: 4, title: "5. Metodologia SCI", time: 170, type: "sci" },
+            { id: 5, title: "6. Visão Geral", time: 205, type: "geral" },
+            { id: 6, title: "7. Boas Práticas", time: 217, type: "praticas" },
+            { id: 7, title: "8. Visão Geral", time: 300, type: "geral" },
+            { id: 8, title: "9. Reflexão", time: 325, type: "texto" },
+            { id: 9, title: "10. Visão Geral Final", time: 333, type: "geral" },
         ];
 
-        let currentStepIndex = -1; // Inicializado como -1 para forçar a renderização da etapa 0 ao carregar a página
+        let currentStepIndex = -1;
         let typingTimeout = null;
         const textoReflexao = "“Não podemos mudar algo que não percebemos, mas depois que percebemos, não podemos deixar de mudar”";
 
-        // Inicia a apresentação (remover overlay)
         function startPresentation(comAudio) {
             const overlay = document.getElementById('start-overlay');
             const audio = document.getElementById('presentation-audio');
@@ -174,10 +160,33 @@
                 
                 if (comAudio && audio) {
                     audio.playbackRate = 1.25;
-                    audio.play().catch(e => console.log("O navegador bloqueou o autoplay:", e));
+                    audio.play().catch(e => console.log(e));
                 }
             }, 500); 
         }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const icon = document.getElementById('fullscreen-icon');
+            const text = document.getElementById('fullscreen-text');
+            if (document.fullscreenElement) {
+                icon.setAttribute('data-lucide', 'minimize');
+                text.innerText = 'Sair';
+            } else {
+                icon.setAttribute('data-lucide', 'maximize');
+                text.innerText = 'Tela Cheia';
+            }
+            lucide.createIcons();
+        });
 
         function initPagination() {
             const container = document.getElementById('pagination-container');
@@ -198,7 +207,7 @@
             });
 
             container.insertAdjacentHTML('beforeend', '<div class="shrink-0 w-[130px] md:w-[190px]"></div>');
-            updateUI(); // Chama a atualização de UI imediatamente
+            updateUI();
         }
 
         function updateUI() {
@@ -249,7 +258,6 @@
                 if (audio) audio.currentTime = step.time;
             }
 
-            // Elementos visuais
             const blurOverlay = document.getElementById('blur-overlay');
             const imgCapa = document.getElementById('img-capa');
             const imgReceber = document.getElementById('img-receber');
@@ -259,7 +267,6 @@
             const pTexto = document.getElementById('texto-reflexao');
             const pAutor = document.getElementById('autor-reflexao');
 
-            // 1. Reseta tudo para estado oculto/invisível
             blurOverlay.classList.replace('opacity-100', 'opacity-0');
             
             [imgCapa, imgReceber, imgSci, imgPraticas].forEach(img => {
@@ -271,12 +278,11 @@
             });
 
             containerReflexao.classList.replace('opacity-100', 'opacity-0');
-            pTexto.innerHTML = ''; // Limpa o texto
+            pTexto.innerHTML = '';
             pTexto.classList.remove('typing-cursor');
             pAutor.classList.replace('opacity-100', 'opacity-0');
-            clearTimeout(typingTimeout); // Interrompe animação de texto se houver
+            clearTimeout(typingTimeout);
 
-            // 2. Aplica a nova configuração baseada no tipo da etapa
             if (step.type !== 'geral') {
                 blurOverlay.classList.replace('opacity-0', 'opacity-100');
             }
@@ -312,13 +318,12 @@
                 if (i < textoReflexao.length) {
                     textoElemento.innerHTML += textoReflexao.charAt(i);
                     i++;
-                    typingTimeout = setTimeout(typeCharacter, 45); // Velocidade de digitação
+                    typingTimeout = setTimeout(typeCharacter, 45);
                 } else {
                     textoElemento.classList.remove('typing-cursor');
                     autorElemento.classList.replace('opacity-0', 'opacity-100');
                 }
             }
-            // Inicia com um pequeno atraso para dar tempo do desfoque aparecer
             typingTimeout = setTimeout(typeCharacter, 800);
         }
 
@@ -381,7 +386,6 @@
             if (e.key === 'ArrowLeft') prevStep();
         });
 
-        // INICIALIZAÇÃO IMEDIATA (Não espera imagens, resolve o problema da barra vazia)
         window.onload = () => {
             initPagination();
             goToStep(0, false); 
