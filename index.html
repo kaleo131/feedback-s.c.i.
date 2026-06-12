@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Guia de Feedback - Ciclo de Performance</title>
+    <title>Guia Prático de Feedback | RH - Cury</title>
+    <link rel="icon" href="icone.png" type="image/png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -68,12 +69,12 @@
         </div>
     </div>
 
-    <a href="https://biblioteca-de-metodologias-rh-cury.vercel.app/" class="fixed top-4 left-4 z-50 bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
+    <a href="https://biblioteca-de-metodologias-rh-cury.vercel.app/" class="fixed top-4 left-4 z-[110] bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
         <i data-lucide="library" class="w-4 h-4 text-emerald-600"></i>
         <span class="hide-on-mobile">Biblioteca</span>
     </a>
 
-    <button onclick="toggleFullScreen()" class="fixed top-4 right-4 z-50 bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
+    <button onclick="toggleFullScreen()" class="fixed top-4 right-4 z-[110] bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
         <i data-lucide="maximize" id="fullscreen-icon" class="w-4 h-4 text-emerald-600"></i>
         <span class="hide-on-mobile" id="fullscreen-text">Tela Cheia</span>
     </button>
@@ -124,7 +125,7 @@
         </div>
     </div>
 
-    <div id="global-tooltip" class="fixed z-[110] px-3 py-1.5 bg-slate-800 text-white text-xs md:text-sm whitespace-nowrap rounded-lg shadow-xl pointer-events-none transition-all duration-200 opacity-0 invisible">
+    <div id="global-tooltip" class="fixed z-[120] px-3 py-1.5 bg-slate-800 text-white text-xs md:text-sm whitespace-nowrap rounded-lg shadow-xl pointer-events-none transition-all duration-200 opacity-0 invisible">
         <span id="global-tooltip-text"></span>
         <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
     </div>
@@ -141,8 +142,8 @@
             { id: 5, title: "6. Visão Geral", time: 205, type: "geral" },
             { id: 6, title: "7. Boas Práticas", time: 217, type: "praticas" },
             { id: 7, title: "8. Visão Geral", time: 300, type: "geral" },
-            { id: 8, title: "9. Reflexão", time: 325, type: "texto" },
-            { id: 9, title: "10. Visão Geral Final", time: 333, type: "geral" },
+            { id: 8, title: "9. Reflexão", time: 333, type: "texto" },
+            { id: 9, title: "10. Visão Geral Final", time: 345, type: "geral" },
         ];
 
         let currentStepIndex = -1;
