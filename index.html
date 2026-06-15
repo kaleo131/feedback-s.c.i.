@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Guia Prático de Feedback | RH - Cury</title>
+    <title>Guia Prático de Metas SMART | RH - Cury</title>
     <link rel="icon" href="icone.png" type="image/png">
     <link rel="shortcut icon" href="icone.png" type="image/png">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -17,8 +18,31 @@
             width: 100%;
             height: 100%;
             overflow: hidden; 
-            background-color: #fafbf6;
+            background-color: #f3f4f6; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #canvas-container {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+
+        #main-image {
+            max-width: none;
+            width: 1920px; 
+            transform-origin: center center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -32,32 +56,22 @@
         @media (max-width: 640px) {
             .hide-on-mobile { display: none; }
         }
-
-        .typing-cursor::after {
-            content: '|';
-            animation: blink 1s step-start infinite;
-            color: #10b981;
-        }
-        
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
     </style>
 </head>
-<body class="antialiased text-slate-800 flex flex-col">
+<body class="antialiased text-gray-800 flex flex-col h-screen">
 
-    <div id="start-overlay" class="fixed inset-0 z-[100] bg-white/80 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-500">
+    <div id="start-overlay" class="fixed inset-0 z-[100] bg-white/70 backdrop-blur-md flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-2xl flex flex-col items-center max-w-lg w-11/12 text-center border border-slate-200 transform transition-transform">
             
-            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6 animate-bounce">
+            <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6 animate-bounce">
                 <i data-lucide="play" class="w-10 h-10 ml-1"></i>
             </div>
             
-            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3">Guia de Feedback</h1>
-            <p class="text-slate-500 mb-8">Bem-vindo(a) ao guia interativo de Feedback. Escolha como deseja iniciar a apresentação.</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-slate-800 mb-3">Ciclo de Performance</h1>
+            <p class="text-slate-500 mb-8">Bem-vindo(a) ao guia interativo de Metas SMART. Escolha como deseja iniciar a apresentação.</p>
             
             <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
-                <button onclick="startPresentation(true)" class="px-6 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-base transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 w-full sm:flex-1">
+                <button onclick="startPresentation(true)" class="px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold text-base transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 w-full sm:flex-1">
                     <i data-lucide="volume-2" class="w-5 h-5"></i>
                     Com Áudio
                 </button>
@@ -71,34 +85,18 @@
     </div>
 
     <a href="https://biblioteca-de-metodologias-rh-cury.vercel.app/" class="fixed top-4 left-4 z-[999] bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
-        <i data-lucide="library" class="w-4 h-4 text-emerald-600"></i>
+        <i data-lucide="library" class="w-4 h-4 text-blue-600"></i>
         <span class="hide-on-mobile">Biblioteca</span>
     </a>
 
     <button onclick="toggleFullScreen()" class="fixed top-4 right-4 z-[999] bg-white/90 backdrop-blur-sm border border-slate-200 px-4 py-2 rounded-xl shadow-md flex items-center gap-2 hover:bg-slate-50 text-slate-700 transition-all font-medium text-sm">
-        <i data-lucide="maximize" id="fullscreen-icon" class="w-4 h-4 text-emerald-600"></i>
+        <i data-lucide="maximize" id="fullscreen-icon" class="w-4 h-4 text-blue-600"></i>
         <span class="hide-on-mobile" id="fullscreen-text">Tela Cheia</span>
     </button>
 
-    <div id="presentation-area" class="relative w-full flex-1 overflow-hidden flex justify-center items-center bg-[#fafbf6]">
-        
-        <img id="bg-general" src="geral.png" alt="Visão Geral Feedback" class="absolute inset-0 w-full h-full object-contain opacity-100 z-0">
-
-        <div id="blur-overlay" class="absolute inset-0 bg-[#fafbf6]/85 backdrop-blur-md opacity-0 transition-opacity duration-1000 z-10 pointer-events-none"></div>
-
-        <img id="img-capa" src="capa.png" alt="Capa Feedback" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
-
-        <img id="img-receber" src="receber.png" alt="Como Receber e Agir" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
-        
-        <img id="img-sci" src="sci.png" alt="Metodologia SCI" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
-        
-        <img id="img-praticas" src="praticas.png" alt="Boas Práticas" class="absolute max-w-5xl w-11/12 max-h-[85%] object-contain opacity-0 transition-all duration-1000 scale-95 z-20 pointer-events-none">
-
-        <div id="container-reflexao" class="absolute z-30 max-w-4xl w-11/12 text-center opacity-0 transition-opacity duration-1000 pointer-events-none flex flex-col items-center justify-center">
-            <i data-lucide="quote" class="w-12 h-12 md:w-16 md:h-16 text-emerald-500 mb-6 opacity-80"></i>
-            <p id="texto-reflexao" class="text-2xl md:text-4xl lg:text-5xl font-medium text-slate-800 leading-relaxed tracking-wide min-h-[150px] font-serif"></p>
-            <p id="autor-reflexao" class="mt-8 text-emerald-600 font-semibold text-lg md:text-2xl opacity-0 transition-opacity duration-1000">— Sheryl Sandberg</p>
-        </div>
+    <div id="canvas-container">
+        <!-- O caminho foi reajustado para ficar na mesma pasta para evitar quebras no Vercel -->
+        <img id="main-image" src="./metas.png" alt="Mapa Mental Metas SMART">
     </div>
 
     <div class="min-h-[80px] bg-white border-t border-slate-200 px-2 md:px-8 w-full flex flex-col md:flex-row items-center justify-between shrink-0 shadow-[0_-4px_15px_rgba(0,0,0,0.02)] z-50 relative py-3 md:py-0 gap-3 md:gap-0">
@@ -106,14 +104,14 @@
         <div class="w-1/4 hidden md:block"></div>
 
         <div class="flex-1 flex w-full md:w-auto justify-center items-center gap-1 md:gap-3">
-            <button onclick="scrollCarousel(-1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors shrink-0">
+            <button onclick="scrollCarousel(-1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-blue-600 hover:bg-slate-100 transition-colors shrink-0">
                 <i data-lucide="chevron-left" class="w-4 h-4 md:w-5 md:h-5"></i>
             </button>
 
             <div class="flex items-center justify-start gap-2 overflow-x-auto no-scrollbar py-2 scroll-smooth w-[260px] md:w-[380px]" id="pagination-container">
             </div>
 
-            <button onclick="scrollCarousel(1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-emerald-600 hover:bg-slate-100 transition-colors shrink-0">
+            <button onclick="scrollCarousel(1)" class="p-1 md:p-2 rounded-full text-slate-400 hover:text-blue-600 hover:bg-slate-100 transition-colors shrink-0">
                 <i data-lucide="chevron-right" class="w-4 h-4 md:w-5 md:h-5"></i>
             </button>
         </div>
@@ -121,7 +119,7 @@
         <div class="flex items-center justify-center md:justify-end w-full md:w-1/4">
             <div class="flex flex-col items-center md:items-end w-[90%] md:w-auto">
                 <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest md:mr-1 mb-0.5">Narração</span>
-                <audio id="presentation-audio" src="audio.mp3" controls class="h-8 md:h-10 w-full md:w-64 outline-none rounded-lg bg-slate-50"></audio>
+                <audio id="presentation-audio" src="./audio.mp3" controls class="h-8 md:h-10 w-full md:w-64 outline-none rounded-lg bg-slate-50"></audio>
             </div>
         </div>
     </div>
@@ -134,22 +132,42 @@
     <script>
         lucide.createIcons();
 
+        let panzoom;
+        const elem = document.getElementById('main-image');
+        
+        let currentRatio = 1;
+        const BASE_WIDTH = 1920;
+        const BASE_HEIGHT = 900;
+
         const steps = [
-            { id: 0, title: "1. Capa", time: 0, type: "capa" },
-            { id: 1, title: "2. Visão Geral", time: 35, type: "geral" },
-            { id: 2, title: "3. Como Receber e Agir", time: 66, type: "receber" },
-            { id: 3, title: "4. Visão Geral", time: 160, type: "geral" },
-            { id: 4, title: "5. Metodologia SCI", time: 170, type: "sci" },
-            { id: 5, title: "6. Visão Geral", time: 205, type: "geral" },
-            { id: 6, title: "7. Boas Práticas", time: 217, type: "praticas" },
-            { id: 7, title: "8. Visão Geral", time: 300, type: "geral" },
-            { id: 8, title: "9. Reflexão", time: 325, type: "texto" },
-            { id: 9, title: "10. Visão Geral Final", time: 335, type: "geral" },
+            { id: 0, title: "1. Visão Geral", scale: 1.73, x: 25, y: 10, time: 0 },
+            { id: 1, title: "2. O DNA de uma Meta SMART", scale: 2.12, x: 248, y: -38, time: 49 },
+            { id: 2, title: "3. S - Específica", scale: 4.24, x: 386, y: 55, time: 67 },
+            { id: 3, title: "4. M - Mensurável", scale: 4.24, x: 104, y: 49, time: 78 },
+            { id: 4, title: "5. A - Alcançável", scale: 4.24, x: 252, y: -60, time: 90 },
+            { id: 5, title: "6. R - Realista", scale: 4.24, x: 395, y: -166, time: 109 },
+            { id: 6, title: "7. T - Temporal", scale: 4.24, x: 113, y: -167, time: 137 },
+            { id: 7, title: "8. Do Genérico ao SMART", scale: 3.84, x: -202, y: 55, time: 161 },
+            { id: 8, title: "9. Checklist de Validação & IA", scale: 4.24, x: -201, y: -140, time: 275 },
+            { id: 9, title: "10. Resumo Final", scale: 1.73, x: 25, y: 10, time: 348 },
         ];
 
         let currentStepIndex = -1;
-        let typingTimeout = null;
-        const textoReflexao = "“Não podemos mudar algo que não percebemos, mas depois que percebemos, não podemos deixar de mudar”";
+
+        function calcRatio() {
+            const container = document.getElementById('canvas-container');
+            if (!container) return;
+            const ratioW = container.clientWidth / BASE_WIDTH;
+            const ratioH = container.clientHeight / BASE_HEIGHT;
+            currentRatio = Math.min(ratioW, ratioH);
+        }
+
+        window.addEventListener('resize', () => {
+            calcRatio();
+            if (currentStepIndex >= 0) {
+                goToStep(currentStepIndex, false);
+            }
+        });
 
         function startPresentation(comAudio) {
             const overlay = document.getElementById('start-overlay');
@@ -161,7 +179,7 @@
                 overlay.classList.add('hidden');
                 
                 if (comAudio && audio) {
-                    audio.playbackRate = 1.25;
+                    audio.playbackRate = 1.25; 
                     audio.play().catch(e => console.log(e));
                 }
             }, 500); 
@@ -209,35 +227,36 @@
             });
 
             container.insertAdjacentHTML('beforeend', '<div class="shrink-0 w-[130px] md:w-[190px]"></div>');
-            updateUI();
+            updateUI(); 
         }
 
         function updateUI() {
             steps.forEach((step, index) => {
                 const btn = document.getElementById(`page-btn-${index}`);
                 const label = document.getElementById(`page-label-${index}`);
+                
                 const distance = Math.abs(index - currentStepIndex);
                 
                 if (distance === 0) {
-                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-emerald-600 text-white shadow-md ring-4 ring-emerald-100 shrink-0 h-10 px-4 md:px-5 cursor-default";
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-blue-600 text-white shadow-md ring-4 ring-blue-100 shrink-0 h-10 px-4 md:px-5 cursor-default";
                     label.innerText = step.title; 
                     label.className = "whitespace-nowrap font-bold text-sm md:text-base";
                 } else if (distance === 1) {
-                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-emerald-600 shrink-0 h-10 w-10 cursor-pointer";
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-blue-600 shrink-0 h-10 w-10 cursor-pointer";
                     label.innerText = index + 1; 
                     label.className = "font-medium text-sm md:text-base";
                 } else if (distance === 2) {
-                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100/80 text-slate-400 hover:bg-slate-200 hover:text-emerald-600 shrink-0 h-8 w-8 cursor-pointer";
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100/80 text-slate-400 hover:bg-slate-200 hover:text-blue-600 shrink-0 h-8 w-8 cursor-pointer";
                     label.innerText = index + 1; 
                     label.className = "font-medium text-xs";
                 } else {
-                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100/50 text-slate-300 hover:bg-slate-200 hover:text-emerald-600 shrink-0 h-6 w-6 cursor-pointer opacity-70 hover:opacity-100";
+                    btn.className = "flex items-center justify-center rounded-full transition-all duration-500 bg-slate-100/50 text-slate-300 hover:bg-slate-200 hover:text-blue-600 shrink-0 h-6 w-6 cursor-pointer opacity-70 hover:opacity-100";
                     label.innerText = index + 1; 
                     label.className = "font-medium text-[10px]";
                 }
             });
 
-            hideGlobalTooltip();
+            hideGlobalTooltip(); 
 
             const activeBtn = document.getElementById(`page-btn-${currentStepIndex}`);
             if (activeBtn) {
@@ -247,86 +266,54 @@
             }
         }
 
+        function handleMouseEnter(index, element) {
+            if (index !== currentStepIndex) {
+                const tooltip = document.getElementById('global-tooltip');
+                document.getElementById('global-tooltip-text').innerText = steps[index].title;
+                
+                const rect = element.getBoundingClientRect();
+                
+                tooltip.style.left = (rect.left + rect.width / 2) + 'px';
+                tooltip.style.top = (rect.top - 8) + 'px'; 
+                tooltip.style.transform = 'translate(-50%, -100%)';
+                
+                tooltip.classList.remove('opacity-0', 'invisible');
+            }
+        }
+
+        function hideGlobalTooltip() {
+            const tooltip = document.getElementById('global-tooltip');
+            if (tooltip) tooltip.classList.add('opacity-0', 'invisible');
+        }
+
+        function scrollCarousel(direction) {
+            const container = document.getElementById('pagination-container');
+            container.scrollBy({ left: direction * 150, behavior: 'smooth' });
+        }
+
         function goToStep(index, syncAudio = true) {
-            if (index < 0 || index >= steps.length) return;
+            if (!panzoom || index < 0 || index >= steps.length) return;
+            
             if (currentStepIndex === index && !syncAudio) return;
 
             currentStepIndex = index;
             const step = steps[index];
+            
+            calcRatio(); 
+            
+            const targetScale = step.scale * currentRatio;
+            const targetX = step.x; 
+            const targetY = step.y; 
+
+            panzoom.zoom(targetScale, { animate: true, duration: 1200 });
+            panzoom.pan(targetX, targetY, { animate: true, duration: 1200 });
+
             updateUI();
 
-            if (syncAudio) {
-                const audio = document.getElementById('presentation-audio');
-                if (audio) audio.currentTime = step.time;
+            const audio = document.getElementById('presentation-audio');
+            if (syncAudio && audio) {
+                audio.currentTime = step.time;
             }
-
-            const blurOverlay = document.getElementById('blur-overlay');
-            const imgCapa = document.getElementById('img-capa');
-            const imgReceber = document.getElementById('img-receber');
-            const imgSci = document.getElementById('img-sci');
-            const imgPraticas = document.getElementById('img-praticas');
-            const containerReflexao = document.getElementById('container-reflexao');
-            const pTexto = document.getElementById('texto-reflexao');
-            const pAutor = document.getElementById('autor-reflexao');
-
-            blurOverlay.classList.replace('opacity-100', 'opacity-0');
-            
-            [imgCapa, imgReceber, imgSci, imgPraticas].forEach(img => {
-                if (img) {
-                    img.classList.replace('opacity-100', 'opacity-0');
-                    img.classList.replace('scale-100', 'scale-95');
-                    img.classList.remove('pointer-events-auto');
-                }
-            });
-
-            containerReflexao.classList.replace('opacity-100', 'opacity-0');
-            pTexto.innerHTML = '';
-            pTexto.classList.remove('typing-cursor');
-            pAutor.classList.replace('opacity-100', 'opacity-0');
-            clearTimeout(typingTimeout);
-
-            if (step.type !== 'geral') {
-                blurOverlay.classList.replace('opacity-0', 'opacity-100');
-            }
-
-            if (step.type === 'capa') {
-                imgCapa.classList.replace('opacity-0', 'opacity-100');
-                imgCapa.classList.replace('scale-95', 'scale-100');
-                imgCapa.classList.add('pointer-events-auto');
-            } else if (step.type === 'receber') {
-                imgReceber.classList.replace('opacity-0', 'opacity-100');
-                imgReceber.classList.replace('scale-95', 'scale-100');
-                imgReceber.classList.add('pointer-events-auto');
-            } else if (step.type === 'sci') {
-                imgSci.classList.replace('opacity-0', 'opacity-100');
-                imgSci.classList.replace('scale-95', 'scale-100');
-                imgSci.classList.add('pointer-events-auto');
-            } else if (step.type === 'praticas') {
-                imgPraticas.classList.replace('opacity-0', 'opacity-100');
-                imgPraticas.classList.replace('scale-95', 'scale-100');
-                imgPraticas.classList.add('pointer-events-auto');
-            } else if (step.type === 'texto') {
-                containerReflexao.classList.replace('opacity-0', 'opacity-100');
-                startTypingEffect(pTexto, pAutor);
-            }
-        }
-
-        function startTypingEffect(textoElemento, autorElemento) {
-            let i = 0;
-            textoElemento.innerHTML = '';
-            textoElemento.classList.add('typing-cursor');
-            
-            function typeCharacter() {
-                if (i < textoReflexao.length) {
-                    textoElemento.innerHTML += textoReflexao.charAt(i);
-                    i++;
-                    typingTimeout = setTimeout(typeCharacter, 45);
-                } else {
-                    textoElemento.classList.remove('typing-cursor');
-                    autorElemento.classList.replace('opacity-0', 'opacity-100');
-                }
-            }
-            typingTimeout = setTimeout(typeCharacter, 800);
         }
 
         const audioPlayer = document.getElementById('presentation-audio');
@@ -352,50 +339,73 @@
             });
         }
 
-        function handleMouseEnter(index, element) {
-            if (index !== currentStepIndex) {
-                const tooltip = document.getElementById('global-tooltip');
-                document.getElementById('global-tooltip-text').innerText = steps[index].title;
-                const rect = element.getBoundingClientRect();
-                tooltip.style.left = (rect.left + rect.width / 2) + 'px';
-                tooltip.style.top = (rect.top - 8) + 'px'; 
-                tooltip.style.transform = 'translate(-50%, -100%)';
-                tooltip.classList.remove('opacity-0', 'invisible');
+        function nextStep() {
+            if (currentStepIndex < steps.length - 1) {
+                goToStep(currentStepIndex + 1);
+            } else {
+                goToStep(0);
             }
         }
 
-        function hideGlobalTooltip() {
-            const tooltip = document.getElementById('global-tooltip');
-            if (tooltip) tooltip.classList.add('opacity-0', 'invisible');
-        }
-
-        function scrollCarousel(direction) {
-            const container = document.getElementById('pagination-container');
-            container.scrollBy({ left: direction * 150, behavior: 'smooth' });
-        }
-
-        function nextStep() {
-            if (currentStepIndex < steps.length - 1) goToStep(currentStepIndex + 1);
-            else goToStep(0);
-        }
-
         function prevStep() {
-            if (currentStepIndex > 0) goToStep(currentStepIndex - 1);
+            if (currentStepIndex > 0) {
+                goToStep(currentStepIndex - 1);
+            }
         }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextStep();
-            if (e.key === 'ArrowLeft') prevStep();
-        });
 
         window.onload = () => {
-            initPagination();
-            goToStep(0, false); 
+            initPagination(); 
             
             if (audioPlayer) {
                 audioPlayer.playbackRate = 1.25;
             }
+            
+            if (elem.complete && elem.naturalHeight !== 0) {
+                iniciarPanzoom();
+            } else {
+                elem.onload = iniciarPanzoom;
+                elem.onerror = () => console.error("Erro ao carregar a imagem 'metas.png'.");
+            }
         };
+
+        function iniciarPanzoom() {
+            calcRatio();
+
+            panzoom = Panzoom(elem, {
+                maxScale: 10,        
+                minScale: 0.1,      
+                step: 0.15,         
+                animate: true,      
+                duration: 1200,     
+            });
+
+            elem.parentElement.addEventListener('wheel', panzoom.zoomWithWheel);
+
+            const applyMagneticCenter = () => {
+                setTimeout(() => {
+                    calcRatio(); 
+                    const targetScale = steps[0].scale * currentRatio;
+                    if (panzoom.getScale() <= targetScale + 0.1) {
+                        panzoom.zoom(targetScale, { animate: true, duration: 1000 });
+                        panzoom.pan(steps[0].x, steps[0].y, { animate: true, duration: 1000 });
+                        if (currentStepIndex !== 0) {
+                            currentStepIndex = 0; 
+                            updateUI();
+                        }
+                    }
+                }, 100);
+            };
+
+            elem.addEventListener('panzoomzoom', applyMagneticCenter);
+            elem.addEventListener('panzoomend', applyMagneticCenter);
+
+            goToStep(0, false);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'Space') nextStep();
+            if (e.key === 'ArrowLeft') prevStep();
+        });
 
     </script>
 </body>
