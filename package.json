@@ -1,0 +1,17 @@
+{
+  "name": "feedback-sci",
+  "version": "1.0.0",
+  "description": "Guia Prático de Feedback - Interactive presentation",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build step required'",
+    "lint": "echo 'No linter configured for static site'"
+  },
+  "keywords": ["feedback", "presentation", "interactive"],
+  "author": "kaleo131",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
